@@ -15,8 +15,9 @@ def rainfall_events(rain_data: list):
         if block[0] != 0:  # verifica se primeiro valor é diferente de zero
             total = sum(block)
             if total >= 10:
-                print(f"Evento de até 6 horas detectado de {total}mm: {block}")
-                events.append([rain_data[0][start], rain_data[0][start + 72 - 1], total])
+                # print(f"Evento de até 6 horas detectado de {total}mm: {block}")
+                intensity = round(rainfall_intensity(total, rain_data[0][start], rain_data[0][start + 72]), 4)
+                events.append([rain_data[0][start], rain_data[0][start + 72], total, intensity])
                 events_indexes.extend(range(start, start + 72))
                 start += 72
             else:
@@ -37,8 +38,9 @@ def rainfall_events(rain_data: list):
         if block[0] != 0:  # começa com valor diferente de zero
             total = sum(block)
             if total > 6:
-                print(f"Evento de até 15 minutos detectado de {total:.3f}mm: {block}")
-                events.append([rain_data[0][start], rain_data[0][start + 3 - 1], total, "Evento 15min"])
+                # print(f"Evento de até 15 minutos detectado de {total:.3f}mm: {block}")
+                intensity = round(rainfall_intensity(total, rain_data[0][start], rain_data[0][start + 3]), 4)
+                events.append([rain_data[0][start], rain_data[0][start + 3], total, intensity])
                 events_indexes.extend(range(start, start + 3))
                 start += 3
             else:
@@ -47,3 +49,7 @@ def rainfall_events(rain_data: list):
             start += 1
 
     return events
+
+
+def rainfall_intensity(total_precipitation, event_start, event_end):
+    return total_precipitation / ((event_end - event_start).total_seconds() / 3600)

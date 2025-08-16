@@ -2,6 +2,7 @@ from datetime import datetime
 
 linhas, time, rain, temp = [], [], [], []
 
+
 def cr1000_data(file):
     with open(file, 'r') as arquivo:
         for linha in arquivo:
